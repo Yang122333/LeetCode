@@ -1,4 +1,7 @@
-import java.util.ArrayList;
+/**
+ * 判断输入的符号是否合法
+ */
+
 import java.util.HashMap;
 import java.util.Stack;
 
