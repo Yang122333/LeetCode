@@ -16,6 +16,7 @@ public class MineClearance {
                 }
             }
         }
+        return null;
     }
 
     public void recursion(char[][] chars, int[][] number, int high, int low) {
