@@ -1,19 +1,18 @@
-package container;
+package container.List;
 
 public class LinkList<T> {
     class Node {
         T data;
-        Node node;
         Node next;
 
-        public Node(T data, Node node) {
+        public Node(T data, Node next) {
             this.data = data;
-            this.node = node;
+            this.next = next;
         }
     }
 
-    private Node list;
-    private int size;
+    protected Node list;
+    protected int size;
 
     //增删改查
     public void put(T data) {
@@ -55,9 +54,12 @@ public class LinkList<T> {
         if (size == 0) {
             return null;
         }
-        Node node = list;
-        list = list.next;
-        node.next = null;
+        Node node = list,prev = list;
+        while (node.next != null) {
+            prev = node;
+            node = node.next;
+        }
+        prev.next = null;
         size--;
         return node.data;
     }
@@ -84,14 +86,14 @@ public class LinkList<T> {
 
     public T removeLast() {
 //        return remove(size - 1);
-        if(list != null){
-            Node prev = list ,cur = list;
-            while (cur.next != null){
+        if (list != null) {
+            Node prev = list, cur = list;
+            while (cur.next != null) {
                 prev = cur;
                 cur = cur.next;
             }
             prev.next = null;
-            size --;
+            size--;
             return cur.data;
         }
         return null;
@@ -115,21 +117,40 @@ public class LinkList<T> {
         for (int i = 0; i < index; i++) {
             curNode = curNode.next;
         }
-        return curNode.data ;
+        return curNode.data;
     }
-
 }
 
-class  LRUList<T> extends LinkList<T>{
+class LRUList<T> extends LinkList<T> {
     private int LRU_MAX = 5;
     private int maxCapacity;
-    public LRUList(int maxCapacity){
-       this.maxCapacity = maxCapacity;
+
+    public LRUList(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
     }
-    public LRUList(){
+
+    public LRUList() {
         this.maxCapacity = LRU_MAX;
     }
-    public void put(T data){
 
+    public void put(T data) {
+        super.put(data);
+        if (size > maxCapacity) {
+            remove();
+        }
+    }
+
+    public Node getNode(int index) {
+        Node findNode = super.FindNode(index);
+        remove(index);
+        put(findNode.data);
+        return findNode;
+    }
+
+    public void print() {
+        while (list != null) {
+            System.out.print(list.data + " ");
+            list = list.next;
+        }
     }
 }
